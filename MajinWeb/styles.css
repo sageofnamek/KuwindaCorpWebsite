@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #fff; /* Default text color white on dark backgrounds */
+}
+
+.container {
+    background: rgba(0,0,0,0.8); /* Black, similar to Ganymede menus */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: #fff; /* White text instead of blue */
+    margin-bottom: 20px;
+}
+
+button {
+    background: rgba(0,0,0,0.8); 
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#imageDisplay {
+    margin-top: 20px;
+    border: 1px solid #333; 
+    width: 300px;
+    height: 300px;
+    display: none;
+    margin: 0 auto;
+    background-color: #444; /* A dark gray background */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+#imageDisplay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.scoreboard {
+    margin-top: 20px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+    color: #fff; /* White text on dark background */
+}
+
+.scoreboard div {
+    margin: 10px;
+    color: #fff;
+}
+
+#resetScore {
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    margin-top: 20px;
+    padding: 8px 16px;
+}
+
+#resetScore:hover {
+    background: rgba(0,0,0,0.6);
+}
+
+#resetText {
+    font-size: 18px;
+    color: #fff; /* White text instead of red */
+    margin-top: 10px;
+}
