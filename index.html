@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kuwinda Corp. Homepage</title>
+<style>
+  body {
+    margin: 0;
+    background: #f0f0f0;
+    height: 200vh;
+    overflow-x: hidden; 
+    position: relative;
+    font-family: sans-serif;
+  }
+
+  .image-container {
+    position: relative;
+    width: 400px;
+    margin: 100px auto;
+    text-align: center;
+    transition: filter 0.3s ease;
+  }
+
+  .image-container img {
+    width: 100%;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+  }
+
+  .image-container img:hover {
+    transform: scale(1.05);
+  }
+
+  /* Droplets */
+  .droplet, .bounce-drop {
+    position: absolute;
+    width: 5px;   
+    height: 5px;
+    background: #7efbd7;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  /* Left Text Container */
+  .text-container {
+    position: fixed;
+    top: 50%;
+    left: -300px; 
+    transform: translateY(-50%);
+    width: 250px;
+    padding: 20px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 10px;
+    transition: left 0.5s ease;
+    z-index: 5;
+    cursor: pointer; /* Clickable to reset */
+  }
+
+  .text-container.show {
+    left: 20px; 
+  }
+
+  .text-container h1 {
+    margin: 0;
+    font-size: 24px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+
+  .text-container h1.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .text-container h2 {
+    margin: 10px 0 0 0;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+
+  .text-container h2.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Right Menu Container */
+  .menu-container {
+    position: fixed;
+    top: 50%;
+    right: -300px;
+    transform: translateY(-50%);
+    width: 200px;
+    padding: 20px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 10px;
+    transition: right 0.5s ease;
+    z-index: 5;
+  }
+
+  .menu-container.show {
+    right: 20px;
+  }
+
+  .menu-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu-container ul li {
+    margin: 10px 0;
+    font-size: 16px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .menu-container ul li.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Submenu styling */
+  .submenu {
+    list-style: none;
+    margin: 5px 0 0 10px;
+    padding: 0;
+    display: none;
+  }
+
+  .submenu li {
+    margin: 5px 0;
+    font-size: 14px;
+    padding-left: 20px; /* Indentation for submenu items */
+  }
+
+  .has-submenu.open .submenu {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div class="image-container" id="imageContainer">
+  <img src="ganymede2.png" alt="Ganymede Image" id="mainImage">
+</div>
+
+<div class="text-container" id="textContainer">
+  <h1 id="titleText">Kuwinda Corp.</h1>
+  <h2 id="subtitleText">A Remote Viewing Company</h2>
+</div>
+
+<div class="menu-container" id="menuContainer">
+  <ul id="menuList">
+    <!-- Psychic Tools Submenu -->
+    <li id="psychicToolsItem" class="has-submenu">
+      Psychic Tools
+      <ul class="submenu" id="psychicToolsSubMenu">
+        <li>
+          <a href="MajinWeb/index.html" style="color:white;text-decoration:none;">MajinWEB</a>
+        </li>
+        <li>
+          <a href="MajinEXE/majindownload.html" style="color:white;text-decoration:none;">MajinEXE</a>
+        </li>
+      </ul>
+    </li>
+    
+    <!-- Essays Submenu -->
+    <li id="essaysItem" class="has-submenu">
+      Essays
+      <ul class="submenu" id="essaysSubMenu">
+        <li>
+          <a href="Essays/Mirror Talk/mirrortalk.html" style="color:white;text-decoration:none;">Mirror Talk</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>Books</li>
+
+    <!-- YouTube -->
+    <li>
+      <a 
+        href="https://www.youtube.com/@azizbrownkuwindacorp" 
+        target="_blank" 
+        style="color:white; text-decoration:none;"
+      >
+        YouTube
+      </a>
+    </li>
+  </ul>
+</div>
+
+<script>
+  const img = document.getElementById('mainImage');
+  const imageContainer = document.getElementById('imageContainer');
+  const textContainer = document.getElementById('textContainer');
+  const titleText = document.getElementById('titleText');
+  const subtitleText = document.getElementById('subtitleText');
+  const menuContainer = document.getElementById('menuContainer');
+  const menuList = document.getElementById('menuList');
+  const menuItems = menuList.querySelectorAll('li');
+
+  let dripInterval;
+  let textTimeout1, textTimeout2;
+  let userHasClicked = false; 
+
+  // Animate droplets on hover if not clicked
+  img.addEventListener('mouseenter', () => {
+    if (!userHasClicked) {
+      dripInterval = setInterval(() => {
+        for (let i = 0; i < 3; i++) {
+          createDroplet();
+        }
+      }, 200);
+      showText();
+    }
+  });
+
+  img.addEventListener('mouseleave', () => {
+    if (!userHasClicked) {
+      clearInterval(dripInterval);
+      hideText();
+    }
+  });
+
+  // On click: finalize text & show menu
+  img.addEventListener('click', () => {
+    clearInterval(dripInterval);
+    userHasClicked = true;
+    showTextPermanent();
+    showMenu();
+  });
+
+  // Clicking text container resets
+  textContainer.addEventListener('click', () => {
+    resetState();
+  });
+
+  // Generic submenu toggling for all has-submenu items
+  document.querySelectorAll('.has-submenu').forEach((item) => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent click from propagating to body
+      item.classList.toggle('open');
+    });
+  });
+
+  function resetState() {
+    userHasClicked = false;
+    clearInterval(dripInterval);
+    menuContainer.classList.remove('show');
+    menuItems.forEach(item => item.classList.remove('visible'));
+    hideText();
+    imageContainer.style.position = '';
+    imageContainer.style.top = '';
+  }
+
+  function showText() {
+    textContainer.classList.add('show');
+    clearTimeout(textTimeout1);
+    clearTimeout(textTimeout2);
+
+    textTimeout1 = setTimeout(() => {
+      titleText.classList.add('visible');
+    }, 500); 
+    
+    textTimeout2 = setTimeout(() => {
+      subtitleText.classList.add('visible');
+    }, 1000);
+  }
+
+  function showTextPermanent() {
+    textContainer.classList.add('show');
+    titleText.classList.add('visible');
+    subtitleText.classList.add('visible');
+  }
+
+  function hideText() {
+    textContainer.classList.remove('show');
+    titleText.classList.remove('visible');
+    subtitleText.classList.remove('visible');
+    clearTimeout(textTimeout1);
+    clearTimeout(textTimeout2);
+  }
+
+  function showMenu() {
+    menuContainer.classList.add('show');
+    menuItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('visible');
+      }, 300 + index * 100);
+    });
+  }
+
+  function createDroplet() {
+    const rect = img.getBoundingClientRect();
+    const container = img.parentElement;
+
+    const x = Math.random() * rect.width;
+    const droplet = document.createElement('div');
+    droplet.className = 'droplet';
+    droplet.style.left = x + 'px';
+    droplet.style.top = (rect.height - 5) + 'px';
+
+    container.appendChild(droplet);
+
+    let dropPos = rect.height;
+    let fallSpeed = 2 + Math.random() * 3;
+    const floorY = rect.height + 100;
+
+    function fall() {
+      dropPos += fallSpeed;
+      droplet.style.top = dropPos + 'px';
+
+      if (dropPos >= floorY) {
+        createBouncingDroplets(droplet.offsetLeft, droplet.offsetTop, container, floorY);
+        droplet.remove();
+        return;
+      }
+      requestAnimationFrame(fall);
+    }
+    requestAnimationFrame(fall);
+  }
+
+  function createBouncingDroplets(x, y, container, floorY) {
+    const angles = [45, 90, 135]; 
+    angles.forEach(angleDeg => {
+      const angleRad = (angleDeg * Math.PI) / 180;
+      const bounceDrop = document.createElement('div');
+      bounceDrop.className = 'bounce-drop';
+      bounceDrop.style.left = x + 'px';
+      bounceDrop.style.top = floorY + 'px'; 
+
+      container.appendChild(bounceDrop);
+
+      const initialSpeed = 3;
+      let vx = Math.cos(angleRad) * initialSpeed;
+      let vy = -Math.sin(angleRad) * initialSpeed; 
+      let bx = x;
+      let by = floorY;
+      const gravity = 0.2;
+      const bouncesAllowed = 3; 
+      let bounceCount = 0;
+      let frameCount = 0;
+      const maxFrames = 600;
+
+      function animateBounce() {
+        frameCount++;
+        bx += vx;
+        by += vy;
+        vy += gravity;
+
+        if (by >= floorY) {
+          by = floorY;
+          if (bounceCount < bouncesAllowed) {
+            bounceCount++;
+            vy = -(Math.abs(vy) * 0.6);
+            vx *= 0.8;
+          } else {
+            bounceDrop.style.opacity = '0'; 
+            setTimeout(() => bounceDrop.remove(), 500);
+            return;
+          }
+        }
+
+        vx *= 0.99;
+        bounceDrop.style.left = bx + 'px';
+        bounceDrop.style.top = by + 'px';
+
+        if (frameCount < maxFrames) {
+          requestAnimationFrame(animateBounce);
+        } else {
+          bounceDrop.remove();
+        }
+      }
+      requestAnimationFrame(animateBounce);
+    });
+  }
+</script>
+
+</body>
+</html>
